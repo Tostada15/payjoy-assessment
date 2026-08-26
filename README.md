@@ -25,7 +25,7 @@ It consists of three components:
 
 1. **Clone the repository**
 
-    git clone <your-repo-url>
+    git clone https://github.com/Tostada15/payjoy-assessment.git
     cd payjoy-assessment
 
 
@@ -71,9 +71,10 @@ In another terminal:
 1. In the root of your project, create a file named `.env` (note: no extension)
 2. Add your credentials (check **.env.example**):
 
+    ```env
     EXCHANGERATE_API_KEY=your_api_key_here
     EXCHANGERATE_API_URL=https://v6.exchangerate-api.com/v6
-
+    ```
 **Important:** Never commit `.env` to version control. Use `.env.example` as a template for other developers.
 
 ---
@@ -92,26 +93,14 @@ In another terminal:
 - Supports JSON parsing from external APIs
 - Good for MVP/demo purposes
 
-### Project Structure
-
-payjoy-assessment/
-├── api/
-│ └── main.py # FastAPI application with /convert endpoint
-├── requirements.txt # Python dependencies
-├── .env # Your API credentials (DO NOT COMMIT)
-├── .env.example # Template for environment variables
-└── README.md # This file
-
-
 ### Key Design Decisions
 
 1. Single endpoint ("/convert"): Simplicity and focus on the core requirement
 2. Input validation: Check for positive amounts and valid 3-letter currency codes before calling external API
 3. Error handling: Separate handling for missing parameters, invalid currencies, API failures, and network errors
 4. Async function: Allows concurrent requests without blocking
-5. Health check endpoint: ("/health") for monitoring API availability
-6. Environment variables: API key never hardcoded for security
-7. Timeout on external calls: 5-second timeout prevents hanging requests to ExchangeRate API
+5. Environment variables: API key never hardcoded for security
+6. Timeout on external calls: 5-second timeout prevents hanging requests to ExchangeRate API
 
 ---
 
@@ -145,7 +134,7 @@ The chatbot follows this sequence:
 - Add structured logging to track API calls and errors
 
 ### Medium term
-- Store conversion history for analytics (SQLAlchemy + PostgreSQL)
+- Store conversion history for analytics
 - Add API key authentication for the endpoint
 - Containerize the API for easier deployment
 
@@ -157,9 +146,9 @@ The chatbot follows this sequence:
 
 ---
 
-## How to Measure Success in Production
+## How to measure success in production
 
-### Key Metrics to Track
+### Key metrics to track
 
 1. API Performance:
    - Response time (target: <500ms)

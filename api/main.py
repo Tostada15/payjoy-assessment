@@ -13,7 +13,7 @@ class ConversionResponse(BaseModel):
     converted: float
     rate: float
 
-#Cargar variables de entorno
+#load env variables
 load_dotenv()
 
 app = FastAPI(title = "PayJoy-Assessment-Exchange-Currency-API")
@@ -40,14 +40,14 @@ async def convert(amount: float, currency: str):
     - rate: Exchange rate used
     """
     
-    # Validación: amount debe ser positivo
+    # amount positive
     if amount <= 0:
         raise HTTPException(
             status_code=400,
             detail="Amount must be greater than 0"
         )
     
-    # Validación: currency no debe estar vacío
+    # currency not empty
     if not currency or len(currency) != 3:
         raise HTTPException(
             status_code=400,
@@ -55,11 +55,11 @@ async def convert(amount: float, currency: str):
         )
     
     try:
-        # Llamar a ExchangeRate API
+        # call ExchangeRate API
         url = f"{EXCHANGERATE_API_URL}/{EXCHANGERATE_API_KEY}/latest/USD"
         response = requests.get(url, timeout=5)
         
-        # Validar respuesta de ExchangeRate API
+        # validate response
         if response.status_code != 200:
             raise HTTPException(
                 status_code=502,
@@ -68,7 +68,7 @@ async def convert(amount: float, currency: str):
         
         data = response.json()
         
-        # Verificar si la moneda está disponible
+        # check currency
         if data.get("result") != "success":
             raise HTTPException(
                 status_code=400,
@@ -82,7 +82,7 @@ async def convert(amount: float, currency: str):
                 detail=f"Currency '{currency}' is not supported"
             )
         
-        # Calcular conversión
+        # convertion
         rate = rates[currency]
         converted_amount = round(amount * rate, 2)
         
@@ -98,12 +98,6 @@ async def convert(amount: float, currency: str):
             status_code=502,
             detail=f"Error connecting to exchange rate service: {str(e)}"
         )
-
-
-@app.get("/health")
-async def health_check():
-    """Health check endpoint"""
-    return {"status": "ok"}
 
 
 if __name__ == "__main__":
