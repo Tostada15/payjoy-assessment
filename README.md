@@ -6,7 +6,7 @@ Automation Engineer (Tools Specialist) Assessment Solution
 
 ## Overview
 
-This solution automates the customer question: *"What is the exchange rate for my currency?"*
+This solution automates the customer question: *How much is my monthly installment in my local currency?"*
 
 It consists of three components:
 - REST API: Converts USD amounts to target currency using live exchange rates
